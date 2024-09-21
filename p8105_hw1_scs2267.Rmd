@@ -1,0 +1,42 @@
+---
+title: "p8105_hw1_scs2267.Rmd"
+output: html_document
+date: "2024-09-21"
+---
+## Set up
+library(tidyverse)
+library(palmerpenguins)
+data("penguins", package = "palmerpenguins")
+
+
+## Problem 1
+
+### Data Plots
+
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+
+ggplot (data = penguins, aes(x=bill_length_mm, y= flipper_length_mm, color = species)) +
+  geom_point()
+
+ggsave("scatter_plot.pdf", height = 4, width = 6)
+```
+### Description of Penguins Data Set
+
+The data set has `r nrow(penguins)` number of rows and  `r ncol(penguins)` number of columns. The mean flipper size is `r mean(penguins$flipper_length_mm, na.rm = TRUE)`.
+
+
+## Problem 2
+
+```{r}
+library(tidyverse)
+
+la_df = tibble(
+  norm_samp = rnorm(10),
+  norm_samp_pos = norm_samp > 0,
+  var_char = c("abc", "def", "ghi", "jkl", "mno", "pqr", "stu", "vw", "wx", "yz"),
+ var_fac = factor(c("high", "middle", "low", "middle", "low", "low", "high", "middle", "middle", "high"))
+)
+```
+
