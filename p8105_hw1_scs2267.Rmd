@@ -1,11 +1,16 @@
 ---
 title: "p8105_hw1_scs2267.Rmd"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+author: Sonum Siddalingaiah
 date: "2024-09-21"
 ---
 ## Set up
-library(tidyverse)
-library(palmerpenguins)
+This is where I load the package for the "penguins" dataframe.
+
 data("penguins", package = "palmerpenguins")
 
 
@@ -13,26 +18,35 @@ data("penguins", package = "palmerpenguins")
 
 ### Data Plots
 
-```{r}
+Here is a scatter plot that depicts the flipper length of the penguins in relation to their beak size. The points representing the penguins are color coded based on their species.
+
+```{r warning = FALSE}
 library(tidyverse)
 library(palmerpenguins)
 
 ggplot (data = penguins, aes(x=bill_length_mm, y= flipper_length_mm, color = species)) +
-  geom_point()
+  geom_point()+
+  labs(
+    x = "Bill Length",
+    y = "Flipper Length"
+  )
 
 ggsave("scatter_plot.pdf", height = 4, width = 6)
 ```
 ### Description of Penguins Data Set
 
-The data set has `r nrow(penguins)` number of rows and  `r ncol(penguins)` number of columns. The mean flipper size is `r mean(penguins$flipper_length_mm, na.rm = TRUE)`.
+The "penguins" data set contains data on various attributes of a set of penguins. The variables that I will be using from this data set are "flipper_length_mm", which is a numeric variable that measures the length of their flippers, "bill_length_mm", which is a numeric variable that measures the length of their bills, and species, which is a factor with three levels that indicates what species each of them are.
+
+The data set has `r nrow(penguins)` rows and  `r ncol(penguins)` number of columns. The mean flipper length is `r mean(penguins$flipper_length_mm, na.rm = TRUE)`.
 
 
 ## Problem 2
 
-```{r}
+Here is a dataframe (frame_df) I created that contains a random sample of size 10 with a normal distribution, a logical vector indicating whether elements of the sample are greater than 0, a character vector, and a factor vector with levels "high", "middle" and "low".
+```{r warning = FALSE}
 library(tidyverse)
 
-la_df = tibble(
+frame_df = tibble(
   norm_samp = rnorm(10),
   norm_samp_pos = norm_samp > 0,
   var_char = c("abc", "def", "ghi", "jkl", "mno", "pqr", "stu", "vw", "wx", "yz"),
@@ -40,3 +54,23 @@ la_df = tibble(
 )
 ```
 
+### Mean Calculations
+
+Here is the initial code I ran to calculate the means of each of the variables in frame_df().
+
+mean(pull(frame_df, norm_samp))
+mean(pull(frame_df, norm_samp_pos))
+mean(pull(frame_df, var_char))
+mean(pull(frame_df, var_fac))
+
+The means of the normal sample and the logical vector run properly, but the mean function for the character vector and factor vector is unable to run.
+
+### Code using "as.numeric()"
+```{r}
+frame_num_df = tibble(
+  as.numeric(pull(frame_df, norm_samp_pos)),
+  as.numeric(pull(frame_df, var_char)),
+  as.numeric(pull(frame_df, var_fac))
+)
+```
+When I run this code, I get an error message that "NAs introduced by coercion". This indicates that the values were introduced as "NA" because they could not be converted to numeric values. This indicates that, to be able to run the mean for a variable, the variable must have values that are numeric or logical, or can be converted to numeric or logical values. 
